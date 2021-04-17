@@ -580,7 +580,7 @@ run_explicit_prog(const char prog_spec[], int pause, int force_bg)
 	else if(bg)
 	{
 		assert(flags != MF_IGNORE && "This case is for rn_ext()");
-		(void)bg_run_external(cmd, flags == MF_IGNORE, SHELL_BY_USER);
+		(void)bg_run_external(cmd, flags == MF_IGNORE, SHELL_BY_USER, NULL);
 	}
 	else
 	{
@@ -620,7 +620,7 @@ run_implicit_prog(view_t *view, const char prog_spec[], int pause, int force_bg)
 
 	if(bg)
 	{
-		(void)bg_run_external(cmd, 0, SHELL_BY_USER);
+		(void)bg_run_external(cmd, 0, SHELL_BY_USER, NULL);
 	}
 	else
 	{
@@ -1175,7 +1175,8 @@ int
 rn_ext(const char cmd[], const char title[], MacroFlags flags, int bg,
 		int *save_msg)
 {
-	if(bg && flags != MF_NONE && flags != MF_NO_TERM_MUX && flags != MF_IGNORE)
+	if(bg && flags != MF_NONE && flags != MF_NO_TERM_MUX && flags != MF_IGNORE &&
+			flags != MF_PIPE_FILE_LIST && flags != MF_PIPE_FILE_LIST_Z)
 	{
 		ui_sb_errf("\"%s\" macro can't be combined with \" &\"",
 				ma_flags_to_str(flags));
@@ -1202,7 +1203,7 @@ rn_ext(const char cmd[], const char title[], MacroFlags flags, int bg,
 			int error;
 
 			setup_shellout_env();
-			error = (bg_run_external(cmd, 1, SHELL_BY_USER) != 0);
+			error = (bg_run_external(cmd, 1, SHELL_BY_USER, NULL) != 0);
 			cleanup_shellout_env();
 
 			if(error)

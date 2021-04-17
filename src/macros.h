@@ -45,6 +45,9 @@ typedef enum
 	MF_SPLIT,       /* Run command in a new screen region. */
 	MF_IGNORE,      /* Completely ignore command output. */
 	MF_NO_TERM_MUX, /* Forbid using terminal multiplexer, even if active. */
+
+	MF_PIPE_FILE_LIST,  
+	MF_PIPE_FILE_LIST_Z,  
 }
 MacroFlags;
 

@@ -329,6 +329,19 @@ expand_macros_i(const char command[], const char args[], MacroFlags *flags,
 					++x;
 				}
 				break;
+			case '|': /* Pipe file list. */
+				switch(command[x + 1])
+				{
+					case 'l':
+						++x;
+						set_flags(flags, MF_PIPE_FILE_LIST);
+						break;
+					case 'z':
+						++x;
+						set_flags(flags, MF_PIPE_FILE_LIST_Z);
+						break;
+				}
+				break;
 			case '%':
 				expanded = append_to_expanded(expanded, "%");
 				len = strlen(expanded);
@@ -819,6 +832,9 @@ ma_flags_to_str(MacroFlags flags)
 		case MF_SPLIT: return "%s";
 		case MF_IGNORE: return "%i";
 		case MF_NO_TERM_MUX: return "%n";
+
+		case MF_PIPE_FILE_LIST: return "%|l";
+		case MF_PIPE_FILE_LIST_Z: return "%|z";
 	}
 
 	assert(0 && "Unhandled MacroFlags item.");
